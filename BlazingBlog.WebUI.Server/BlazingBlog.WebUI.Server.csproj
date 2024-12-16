@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazingBlogApplication\BlazingBlogApplication.csproj" />
+    <ProjectReference Include="..\BlazingBlogInfastructure\BlazingBlogInfastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingBlogDomain", "Blazin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingBlogApplication", "BlazingBlogApplication\BlazingBlogApplication.csproj", "{DDED5DEF-D217-4542-AF86-78298E793875}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingBlogInfastructure", "BlazingBlogInfastructure\BlazingBlogInfastructure.csproj", "{21F5638A-62FF-4FC1-99F0-B5F7DE36FA93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{DDED5DEF-D217-4542-AF86-78298E793875}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDED5DEF-D217-4542-AF86-78298E793875}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDED5DEF-D217-4542-AF86-78298E793875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21F5638A-62FF-4FC1-99F0-B5F7DE36FA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21F5638A-62FF-4FC1-99F0-B5F7DE36FA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21F5638A-62FF-4FC1-99F0-B5F7DE36FA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21F5638A-62FF-4FC1-99F0-B5F7DE36FA93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{3720B43F-613B-44ED-991C-0C5DC76FDE44} = {0C401242-EF27-4C23-8254-81DF9258CB6B}
 		{60574181-A355-4163-9C75-2E5C854EFBD6} = {0C401242-EF27-4C23-8254-81DF9258CB6B}
 		{DDED5DEF-D217-4542-AF86-78298E793875} = {0C401242-EF27-4C23-8254-81DF9258CB6B}
+		{21F5638A-62FF-4FC1-99F0-B5F7DE36FA93} = {0C401242-EF27-4C23-8254-81DF9258CB6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F5E39EF-E9B2-4C08-B44A-680ECA3350E6}
