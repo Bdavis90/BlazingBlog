@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlazingBlogApplication.Articles.GetArticles
 {
-    public class GetArticlesQuery : IRequest<List<Article>>
+    public class GetArticlesQuery : IRequest<List<ArticleResponse>>
     {
     }
 }

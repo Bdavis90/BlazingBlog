@@ -19,5 +19,12 @@ namespace BlazingBlogInfastructure.Repositories
         {
             return await _context.Articles.ToListAsync();
         }
+
+        public async Task<Article> CreateArticleAsync(Article article)
+        {
+            await _context.Articles.AddAsync(article);
+            await _context.SaveChangesAsync();
+            return article;
+        }
     }
 }
