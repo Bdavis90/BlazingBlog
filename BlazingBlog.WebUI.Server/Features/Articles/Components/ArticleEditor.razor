@@ -1,0 +1,30 @@
+﻿@page "/article-editor"
+@inject ISender Sender
+
+<PageTitle>Create New Article</PageTitle>
+<h3>Create New Article</h3>
+
+<EditForm FormName="ArticleEditorForm" Model="Article" OnSubmit="HandleSubmit">
+    <InputText class="form-control" @bind-Value="Article.Title"></InputText>
+    <InputTextArea class="form-control" @bind-Value="Article.Content"></InputTextArea>
+    <InputDate class="form-control" @bind-Value="Article.DatePublished"></InputDate>
+    <div class="form-check">
+        <InputCheckbox class="form-check-input" @bind-Value="Article.IsPublished"></InputCheckbox>
+        <label class="form-check-label">Is Published</label>
+    </div>
+
+    <button class="btn btn-primary"type="submit">Submit</button>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public ArticleModel Article { get; set; } = new();
+
+    private async Task HandleSubmit()
+    {
+        var command = Article.Adapt<CreateArticleCommand>();
+        var result = await Sender.Send(command);
+        Article = result.Adapt<ArticleModel>();
+    }
+}
