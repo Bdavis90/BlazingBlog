@@ -9,6 +9,8 @@ namespace BlazingBlogDomain.Articles
     public interface IArticleRepository
     {
         Task<List<Article>> GetAllArticlesAsync();
+        Task<Article?> GetArticleByIdAsync(int id);
         Task<Article> CreateArticleAsync(Article article);
+        Task<Article> UpdateArticleAsync(Article article);
     }
 }
