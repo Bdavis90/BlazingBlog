@@ -50,6 +50,7 @@ namespace BlazingBlogInfastructure.Repositories
             articleToUpdate.DatePublished = article.DatePublished;
             articleToUpdate.IsPublished = article.IsPublished;
             articleToUpdate.DateUpdated = DateTime.Now;
+            await _context.SaveChangesAsync();
 
             return articleToUpdate;
 

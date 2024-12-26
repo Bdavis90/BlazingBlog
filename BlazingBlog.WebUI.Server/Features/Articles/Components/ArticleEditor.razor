@@ -1,30 +1,79 @@
 ﻿@page "/article-editor"
+@page "/article-editor/{ArticleId:int}"
 @inject ISender Sender
 
-<PageTitle>Create New Article</PageTitle>
-<h3>Create New Article</h3>
+@if (IsEditMode && Article is not null)
+{
+    <PageTitle>Edit Article: @Article.Title</PageTitle>
+    <h3>Edit Article: @Article.Title</h3>
+}
+else
+{
+    <PageTitle>Create New Article</PageTitle>
+    <h3>Create New Article</h3>
 
-<EditForm FormName="ArticleEditorForm" Model="Article" OnSubmit="HandleSubmit">
-    <InputText class="form-control" @bind-Value="Article.Title"></InputText>
-    <InputTextArea class="form-control" @bind-Value="Article.Content"></InputTextArea>
-    <InputDate class="form-control" @bind-Value="Article.DatePublished"></InputDate>
-    <div class="form-check">
-        <InputCheckbox class="form-check-input" @bind-Value="Article.IsPublished"></InputCheckbox>
-        <label class="form-check-label">Is Published</label>
-    </div>
+}
 
-    <button class="btn btn-primary"type="submit">Submit</button>
-</EditForm>
+@if (Article is not null)
+{
+    <EditForm FormName="ArticleEditorForm" Model="Article" OnSubmit="HandleSubmit">
+        <InputText class="form-control" @bind-Value="Article.Title"></InputText>
+        <InputTextArea class="form-control" @bind-Value="Article.Content"></InputTextArea>
+        <InputDate class="form-control" @bind-Value="Article.DatePublished"></InputDate>
+        <div class="form-check">
+            <InputCheckbox class="form-check-input" @bind-Value="Article.IsPublished"></InputCheckbox>
+            <label class="form-check-label">Is Published</label>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </EditForm>
+
+}
 
 @code {
-
+    private bool IsEditMode => ArticleId != null;
     [SupplyParameterFromForm]
-    public ArticleModel Article { get; set; } = new();
+    public ArticleModel? Article { get; set; }
+    [Parameter]
+    public int? ArticleId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        if (ArticleId is not null)
+        {
+            var result = await Sender.Send(new GetArticleByIdQuery { Id = (int)ArticleId });
+            if (result is not null)
+            {
+                Article ??= result.Adapt<ArticleModel>();
+                Article.Id = (int)ArticleId;
+            }
+        }
+        else
+        {
+            Article ??= new();
+        }
+
+    }
 
     private async Task HandleSubmit()
     {
-        var command = Article.Adapt<CreateArticleCommand>();
-        var result = await Sender.Send(command);
-        Article = result.Adapt<ArticleModel>();
+        if (IsEditMode)
+        {
+            var command = Article.Adapt<UpdateArticleCommand>();
+            var result = await Sender.Send(command);
+            if (result is not null)
+            {
+                Article = result.Adapt<ArticleModel>();
+
+            }
+        }
+        else
+        {
+            var command = Article.Adapt<CreateArticleCommand>();
+            var result = await Sender.Send(command);
+            Article = result.Adapt<ArticleModel>();
+
+        }
     }
 }
