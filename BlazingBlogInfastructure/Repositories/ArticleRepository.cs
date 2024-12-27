@@ -36,7 +36,7 @@ namespace BlazingBlogInfastructure.Repositories
 
         }
 
-        public async Task<Article> UpdateArticleAsync(Article article)
+        public async Task<Article?> UpdateArticleAsync(Article article)
         {
             var articleToUpdate = await GetArticleByIdAsync(article.Id);
 
@@ -54,6 +54,19 @@ namespace BlazingBlogInfastructure.Repositories
 
             return articleToUpdate;
 
+        }
+
+        public async Task<bool> DeleteArticleAsync(int id)
+        {
+            var article = await GetArticleByIdAsync(id);
+            if(article is not null)
+            {
+                _context.Articles.Remove(article);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
     }
 }

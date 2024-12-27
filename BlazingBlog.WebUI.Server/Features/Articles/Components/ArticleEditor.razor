@@ -1,6 +1,8 @@
 ﻿@page "/article-editor"
 @page "/article-editor/{ArticleId:int}"
+@using BlazingBlogApplication.Articles.DeleteArticle
 @inject ISender Sender
+@inject NavigationManager NavigationManager;
 
 @if (IsEditMode && Article is not null)
 {
@@ -27,6 +29,18 @@ else
 
         <button class="btn btn-primary" type="submit">Submit</button>
     </EditForm>
+
+    if (ArticleId is not null)
+    {
+        <p>
+            <form @onsubmit="DeleteArticle" @formname="DeleteArticleForm" method="post">
+                <button class="btn btn-danger">Delete Article</button>
+                <AntiforgeryToken />
+            </form>
+
+        </p>
+
+    }
 
 }
 
@@ -72,8 +86,25 @@ else
         {
             var command = Article.Adapt<CreateArticleCommand>();
             var result = await Sender.Send(command);
-            Article = result.Adapt<ArticleModel>();
+            //Article = result.Adapt<ArticleModel>();
+            NavigationManager.NavigateTo($"/article-editor/{result.Id}");
 
+        }
+    }
+
+    private async Task DeleteArticle()
+    {
+        if (ArticleId is null)
+        {
+            return;
+        }
+
+        var command = new DeleteArticleCommand { Id = (int)ArticleId };
+        var isSuccess = await Sender.Send(command);
+
+        if (isSuccess)
+        {
+            NavigationManager.NavigateTo("/articles");
         }
     }
 }

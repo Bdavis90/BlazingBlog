@@ -26,15 +26,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(2000);
         var results = await Sender.Send(new GetArticlesQuery());
 
         if(results is not null)
         {
             articles = results;
         }
-
-        await Task.CompletedTask;
     }
 
 }
