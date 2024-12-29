@@ -22,8 +22,9 @@ namespace BlazingBlogDomain.Abstractions
         public static Result<T> Ok<T>(T value) => new(value, true, string.Empty);
         public static Result Fail(string errorMessage)
             => new(false, errorMessage);
-        public static Result<T> Ok<T>(string errorMessage) 
+        public static Result<T> Fail<T>(string errorMessage) 
             => new(default, false, errorMessage);
+        public static Result<T> FromValue<T>(T? value) => value != null ? Ok(value) : Fail<T>("Provided value is null");
     }
 
     public class Result<T> : Result
@@ -34,6 +35,9 @@ namespace BlazingBlogDomain.Abstractions
         {
             Value = value;
         }
+
+        public static implicit operator Result<T>(T value) => FromValue(value);
+        public static implicit operator T?(Result<T> result) => result.Value;
 
     }
 }
