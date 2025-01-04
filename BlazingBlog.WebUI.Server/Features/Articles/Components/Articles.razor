@@ -7,9 +7,13 @@
 
 <a href="/article-editor" class="btn btn-primary">Create New Article</a>
 
-@if (!articles.Any())
+@if(articles is null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>Loading articles...</em></p>
+} 
+else if (!articles.Any())
+{
+    <p><em>No articles found.</em></p>
 } else
 {
     @foreach (var article in articles)
@@ -22,15 +26,18 @@
 }
 
 @code {
-    private List<ArticleResponse> articles = new();
+    private List<ArticleResponse>? articles = new();
 
     protected override async Task OnInitializedAsync()
     {
         var results = await Sender.Send(new GetArticlesQuery());
 
-        if(results is not null)
+        if(results.Success)
         {
             articles = results;
+        } else
+        {
+            articles = new();
         }
     }
 
