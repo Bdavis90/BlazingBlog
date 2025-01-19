@@ -7,7 +7,7 @@
 @if (IsEditMode && Article is not null)
 {
     <PageTitle>Edit Article: @Article.Title</PageTitle>
-    <h3>Edit Article: @Article.Title</h3>
+    <h2 class="text-3xl font-extrabold text-gray-50">Edit Article: @Article.Title</h2>
 }
 else
 {
@@ -18,23 +18,35 @@ else
 
 @if (Article is not null)
 {
-    <EditForm FormName="ArticleEditorForm" Model="Article" OnSubmit="HandleSubmit">
-        <InputText class="form-control" @bind-Value="Article.Title"></InputText>
-        <InputTextArea class="form-control" @bind-Value="Article.Content"></InputTextArea>
-        <InputDate class="form-control" @bind-Value="Article.DatePublished"></InputDate>
-        <div class="form-check">
-            <InputCheckbox class="form-check-input" @bind-Value="Article.IsPublished"></InputCheckbox>
-            <label class="form-check-label">Is Published</label>
+    <EditForm FormName="ArticleEditorForm" Model="Article" OnSubmit="HandleSubmit" class="space-y-6 my-4">
+        <div>
+            <label for="name" class="text-sm">Full name</label>
+            <InputText id="name" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.Title"></InputText>
+        </div>
+        <div>
+            <label for="content" class="text-sm">Full name</label>
+            <InputTextArea id="content" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.Content"></InputTextArea>
         </div>
 
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <div>
+            <label for="date" class="text-sm">Full name</label>
+            <InputDate id="date" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.DatePublished"></InputDate>
+        </div>
+
+        <div class="form-check">
+            <InputCheckbox class="form-check-input checked:bg-blue-400" @bind-Value="Article.IsPublished"></InputCheckbox>
+            <label>Is Published</label>
+        </div>
+
+        <button class="w-full p-3 text-sm font-bold uppercase rounded bg-blue-400 text-gray-900" type="submit">Submit</button>
     </EditForm>
 
-    if (ArticleId is not null)
+    if (IsEditMode)
     {
         <p>
-            <form @onsubmit="DeleteArticle" @formname="DeleteArticleForm" method="post">
-                <button class="btn btn-danger">Delete Article</button>
+            <h2 class="text-3xl font-extrabold text-gray-50">Danger Zone</h2>
+            <form @onsubmit="DeleteArticle" @formname="DeleteArticleForm" method="post" class="my-4">
+                <button class="p-3 text-sm font-bold uppercase rounded bg-red-400 text-gray-900" type="submit">Delete Article</button>
                 <AntiforgeryToken />
             </form>
 
