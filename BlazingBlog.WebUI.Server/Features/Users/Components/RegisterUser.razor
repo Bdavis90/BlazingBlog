@@ -1,0 +1,68 @@
+﻿@page "/register"
+@using BlazingBlogApplication.Users.RegisterUser
+@using BlazingBlogInfastructure.Authentication
+@inject ISender Sender;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Register</PageTitle>
+<div class="space-y-6">
+    <h2 class="text-3xl font-extrabold text-gray-50">Register</h2>
+    
+    <EditForm FormName="RegisterUserForm" Model="UserModel" OnValidSubmit="HandleSubmit" class="space-y-6 my-4">
+        <DataAnnotationsValidator />
+        @* <ValidationSummary /> *@
+        <div>
+            <label for="name" class="text-sm">UserName</label>
+            <InputText id="name" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="UserModel.UserName"></InputText>
+            <ValidationMessage For="() => UserModel.UserName" class="text-danger" />
+        </div>
+        <div>
+            <label for="email" class="text-sm">Email</label>
+            <InputText id="email" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="UserModel.Email"></InputText>
+            <ValidationMessage For="() => UserModel.Email" class="text-danger" />
+        </div>
+
+        <div>
+            <label for="password" class="text-sm">Password</label>
+            <InputText id="password" type="password" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="UserModel.Password"></InputText>
+            <ValidationMessage For="() => UserModel.Password" class="text-danger" />
+        </div>
+
+        <div>
+            <label for="confirmpassword" class="text-sm">Confirm Password</label>
+            <InputText id="confirmpassword" type="password" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="UserModel.ConfirmPassword"></InputText>
+            <ValidationMessage For="() => UserModel.ConfirmPassword" class="text-danger" />
+        </div>
+
+        <button class="w-full p-3 text-sm font-bold uppercase rounded bg-blue-400 text-gray-900" type="submit">Submit</button>
+    </EditForm>
+
+    <span class="text-danger">@_errorMessage</span>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    public RegisterUserModel UserModel { get; set; } = new();
+
+    private string _errorMessage = string.Empty;
+
+    private async Task HandleSubmit()
+    {
+        var command = new RegisterUserCommand
+            {
+                UserName = UserModel.UserName,
+                UserEmail = UserModel.Email,
+                Password = UserModel.Password,
+            };
+
+        var result = await Sender.Send(command);
+
+        if(result.Success)
+        {
+            NavigationManager.NavigateTo("/Login");
+        } else
+        {
+            _errorMessage = result.Error ?? "Registration failed.";
+        }
+    }
+}
