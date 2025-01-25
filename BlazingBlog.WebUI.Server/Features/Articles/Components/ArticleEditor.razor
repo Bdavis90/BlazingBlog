@@ -1,8 +1,10 @@
 ﻿@page "/article-editor"
 @page "/article-editor/{ArticleId:int}"
 @using BlazingBlogApplication.Articles.DeleteArticle
+@using Microsoft.AspNetCore.Authorization
 @inject ISender Sender
 @inject NavigationManager NavigationManager;
+@attribute [Authorize]
 
 @if (IsEditMode && Article is not null)
 {

@@ -3,6 +3,7 @@ using BlazingBlogApplication.Authentication;
 using BlazingBlogDomain.Articles;
 using BlazingBlogInfastructure.Authentication;
 using BlazingBlogInfastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +31,9 @@ namespace BlazingBlogInfastructure
 
         public static void AddAuthentication(IServiceCollection services)
         {
+            // Work around for authentication returnUrl bug in .net 8
+            services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
+
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
