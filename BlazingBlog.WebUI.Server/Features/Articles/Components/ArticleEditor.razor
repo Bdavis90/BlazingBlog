@@ -1,15 +1,14 @@
 ﻿@page "/article-editor"
 @page "/article-editor/{ArticleId:int}"
-@using BlazingBlogApplication.Articles.DeleteArticle
-@using Microsoft.AspNetCore.Authorization
 @inject ISender Sender
 @inject NavigationManager NavigationManager;
+@inject UserManager<User> UserManager
 @attribute [Authorize]
 
 @if (IsEditMode && Article is not null)
 {
     <PageTitle>Edit Article: @Article.Title</PageTitle>
-    <h2 class="text-3xl font-extrabold text-gray-50">Edit Article: @Article.Title</h2>
+    <h2 class="text-3xl font-extrabold text-gray-50">Edit Article: @Article.Title by @Article.UserName</h2>
 }
 else
 {
@@ -22,18 +21,18 @@ else
 {
     <EditForm FormName="ArticleEditorForm" Model="Article" OnSubmit="HandleSubmit" class="space-y-6 my-4">
         <div>
-            <label for="name" class="text-sm">Full name</label>
+            <label for="name" class="text-sm">Title</label>
             <InputText id="name" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.Title"></InputText>
         </div>
         <div>
-            <label for="content" class="text-sm">Full name</label>
+            <label for="content" class="text-sm">Content</label>
             <InputTextArea id="content" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.Content"></InputTextArea>
         </div>
 
-        <div>
-            <label for="date" class="text-sm">Full name</label>
-            <InputDate id="date" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.DatePublished"></InputDate>
-        </div>
+ @*        <div>
+            <label for="date" class="text-sm">Date</label>
+            <InputDate id="date" Type="InputDateType.Date" class="w-full p-3 rounded bg-gray-800 border-gray-400 border-1 shadow" @bind-Value="Article.DatePublished"></InputDate>
+        </div> *@
 
         <div class="form-check">
             <InputCheckbox class="form-check-input checked:bg-blue-400" @bind-Value="Article.IsPublished"></InputCheckbox>
@@ -67,6 +66,8 @@ else
     public ArticleModel? Article { get; set; }
     [Parameter]
     public int? ArticleId { get; set; }
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -109,12 +110,15 @@ else
         else
         {
             var command = Article.Adapt<CreateArticleCommand>();
+            command.UserId = UserManager.GetUserId(HttpContext.User);
+            command.DatePublished = DateTime.UtcNow;
             var result = await Sender.Send(command);
             //Article = result.Adapt<ArticleModel>();
             if (result.Success)
             {
-                NavigationManager.NavigateTo($"/article-editor/{result?.Value?.Id}");
-            } else
+                NavigationManager.NavigateTo($"/article-editor/{result?.Value.Id}");
+            }
+            else
             {
                 SetErrorMessage(result.Error);
             }
@@ -134,8 +138,9 @@ else
 
         if (result.Success)
         {
-            NavigationManager.NavigateTo("/articles");
-        } else
+            NavigationManager.NavigateTo("/");
+        }
+        else
         {
             SetErrorMessage(result.Error);
         }

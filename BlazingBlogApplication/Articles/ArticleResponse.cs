@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace BlazingBlogApplication.Articles
 {
-    public record ArticleResponse(int Id, string Title, string? Content, DateTime DatePublished, bool IsPublished);
+    public record struct ArticleResponse(int Id, string Title, string? Content, DateTime DatePublished, bool IsPublished, string UserName);
 }

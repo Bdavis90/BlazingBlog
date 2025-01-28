@@ -26,7 +26,8 @@
                     <article>
                         <dl>
                             <dd class="text-xs text-gray-400">
-                                <time>@article.DatePublished</time>
+                                <time>@article.DatePublished.ToLocalTime()</time>
+                                <span>by @article.UserName</span>
                             </dd>
                         </dl>
                         <div class="space-y-1">

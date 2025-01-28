@@ -1,6 +1,7 @@
 ﻿using BlazingBlogApplication.Articles;
 using BlazingBlogApplication.Authentication;
 using BlazingBlogDomain.Articles;
+using BlazingBlogDomain.Users;
 using BlazingBlogInfastructure.Authentication;
 using BlazingBlogInfastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -23,9 +24,12 @@ namespace BlazingBlogInfastructure
         public static IServiceCollection AddInfastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IArticleRepository, ArticleRepository>();
 
             AddAuthentication(services);
+
+            services.AddScoped<IArticleRepository, ArticleRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
             return services;
         }
 
