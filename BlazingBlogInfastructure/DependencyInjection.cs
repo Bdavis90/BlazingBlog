@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace BlazingBlogInfastructure
 {
+
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfastructure(this IServiceCollection services, IConfiguration configuration)
@@ -33,7 +34,7 @@ namespace BlazingBlogInfastructure
             return services;
         }
 
-        public static void AddAuthentication(IServiceCollection services)
+        private static void AddAuthentication(IServiceCollection services)
         {
             // Work around for authentication returnUrl bug in .net 8
             services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
@@ -50,11 +51,10 @@ namespace BlazingBlogInfastructure
             }).AddIdentityCookies();
 
             services.AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
-
-
         }
     }
 }

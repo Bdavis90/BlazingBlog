@@ -12,11 +12,13 @@ namespace BlazingBlogInfastructure.Authentication
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthenticationService(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AuthenticationService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task<bool> LoginUserAsync(string username, string password)
@@ -34,6 +36,14 @@ namespace BlazingBlogInfastructure.Authentication
                 EmailConfirmed = true
             };
             var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Writer"));
+                await _userManager.AddToRoleAsync(user, "Writer");
+            }
+
+
 
             var response = new RegisterUserResponse
             {

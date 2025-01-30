@@ -3,7 +3,7 @@
 @inject ISender Sender
 @inject NavigationManager NavigationManager;
 @inject UserManager<User> UserManager
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 
 @if (IsEditMode && Article is not null)
 {
