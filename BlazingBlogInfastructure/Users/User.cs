@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlazingBlogInfastructure.Authentication
+namespace BlazingBlogInfastructure.Users
 {
     public class User : IdentityUser, IUser
     {

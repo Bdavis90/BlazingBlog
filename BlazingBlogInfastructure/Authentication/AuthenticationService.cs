@@ -1,4 +1,5 @@
 ﻿using BlazingBlogApplication.Authentication;
+using BlazingBlogInfastructure.Users;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,11 @@
 ﻿using BlazingBlogApplication.Articles;
 using BlazingBlogApplication.Authentication;
+using BlazingBlogApplication.Users;
 using BlazingBlogDomain.Articles;
 using BlazingBlogDomain.Users;
 using BlazingBlogInfastructure.Authentication;
 using BlazingBlogInfastructure.Repositories;
+using BlazingBlogInfastructure.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
@@ -28,8 +30,11 @@ namespace BlazingBlogInfastructure
 
             AddAuthentication(services);
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

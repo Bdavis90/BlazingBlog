@@ -1,5 +1,5 @@
 ﻿using BlazingBlogDomain.Articles;
-using BlazingBlogInfastructure.Authentication;
+using BlazingBlogInfastructure.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
