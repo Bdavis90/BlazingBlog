@@ -2,8 +2,7 @@
 @page "/article-editor/{ArticleId:int}"
 @inject ISender Sender
 @inject NavigationManager NavigationManager;
-@inject UserManager<User> UserManager
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = "Admin, Writer")]
 
 @if (IsEditMode && Article is not null)
 {
@@ -110,7 +109,6 @@ else
         else
         {
             var command = Article.Adapt<CreateArticleCommand>();
-            command.UserId = UserManager.GetUserId(HttpContext.User);
             command.DatePublished = DateTime.UtcNow;
             var result = await Sender.Send(command);
             //Article = result.Adapt<ArticleModel>();
