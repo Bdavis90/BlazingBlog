@@ -8,9 +8,14 @@
 } else 
 {
     <h2 class="text-3xl font-extrabold text-gray-50">@article.Title</h2>
-    <span class="text-xl-start text-gray-400">
+    <span class="text-xs text-gray-400">
         <time>@article.DatePublished.ToLocalTime()</time>
         <span>by @article.UserName</span>
+        @if (article.CanEdit)
+        {
+                <span> | <a href="/article-editor/@article.Id" class="text-xs text-violet-600">Edit Article</a></span>
+
+        }
     </span>
     <p class="max-w-full prose text-gray-100">@article.Content</p>
 }

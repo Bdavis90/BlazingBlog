@@ -1,4 +1,5 @@
-﻿using BlazingBlogDomain.Articles;
+﻿using BlazingBlogApplication.Users;
+using BlazingBlogDomain.Articles;
 using BlazingBlogDomain.Users;
 
 namespace BlazingBlogApplication.Articles.GetArticleByID
@@ -7,11 +8,13 @@ namespace BlazingBlogApplication.Articles.GetArticleByID
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public GetArticleByIdQueryHandler(IArticleRepository articleRepository, IUserRepository userRepository)
+        public GetArticleByIdQueryHandler(IArticleRepository articleRepository, IUserRepository userRepository, IUserService userService)
         {
             _articleRepository = articleRepository;
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         public async Task<Result<ArticleResponse?>> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)
@@ -27,6 +30,8 @@ namespace BlazingBlogApplication.Articles.GetArticleByID
             {
                 var author = await _userRepository.GetUserByIdAsync(article.UserId);
                 articleResponse.UserName = author?.UserName ?? "Unknown";
+                articleResponse.UserId = article.UserId;
+                articleResponse.CanEdit = await _userService.CurrentUserCanEditArticleAsync(article.Id);
             }
             else
             {
